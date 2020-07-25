@@ -1,3 +1,24 @@
 <template>
-  <h1>Stocks Component</h1>
+  <div>
+    <StockCard v-for="s in stocks" :key="s.id" :stock="s" />
+  </div>
 </template>
+
+<script>
+import StockCard from "./StockCard";
+export default {
+  data() {
+    return {
+      stocks: [
+        { id: 1, name: "BMW", price: 110 },
+        { id: 2, name: "Google", price: 200 },
+        { id: 3, name: "Apple", price: 250 },
+        { id: 4, name: "Twitter", price: 8 }
+      ]
+    };
+  },
+  components: {
+    StockCard
+  }
+};
+</script>
