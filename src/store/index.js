@@ -31,7 +31,6 @@ export default new Vuex.Store({
     // randStocks(state) { }
     buyStock(state, order) {
       const { stockId, stockPrice, quantity } = order;
-      if (state.portfolio.funds < stockPrice * quantity) return;
       let record = state.portfolio.records.find(r => r.id == stockId);
       if (!record) {
         record = {
