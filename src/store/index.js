@@ -28,7 +28,11 @@ export default new Vuex.Store({
     setStocks(state, stocks) {
       state.stocks = stocks;
     },
-    // randStocks(state) { }
+    randStocks(state) {
+      state.stocks.forEach(stock => {
+        stock.price = Math.ceil((Math.random() * 0.2 + 0.9) * stock.price);
+      })
+    },
     buyStock(state, order) {
       const { stockId, stockPrice, quantity } = order;
       let record = state.portfolio.records.find(r => r.id == stockId);
