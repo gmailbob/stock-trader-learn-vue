@@ -1,24 +1,47 @@
 {
-  "stocks": [
-    {
-      "id": 1,
-      "name": "BMW",
-      "price": 110
-    },
-    {
-      "id": 2,
-      "name": "Google",
-      "price": 200
-    },
-    {
-      "id": 3,
-      "name": "Apple",
-      "price": 250
-    },
-    {
-      "id": 4,
-      "name": "Twitter",
-      "price": 8
-    }
-  ]
+  "userData": {
+    "stocks": [
+      {
+        "id": 1,
+        "name": "BMW",
+        "price": 159
+      },
+      {
+        "id": 2,
+        "name": "Google",
+        "price": 152
+      },
+      {
+        "id": 3,
+        "name": "Apple",
+        "price": 256
+      },
+      {
+        "id": 4,
+        "name": "Twitter",
+        "price": 26
+      }
+    ],
+    "funds": 7112,
+    "stockPortfolio": [
+      {
+        "id": 4,
+        "name": "Twitter",
+        "price": 26,
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "name": "Apple",
+        "price": 256,
+        "quantity": 11
+      },
+      {
+        "id": 1,
+        "name": "BMW",
+        "price": 159,
+        "quantity": 2
+      }
+    ]
+  }
 }

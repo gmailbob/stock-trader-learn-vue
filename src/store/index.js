@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-const { stocks } = require('../../db')
+const initStocks = require('../../initStocks')
 
 Vue.use(Vuex)
 
@@ -21,7 +21,15 @@ export default new Vuex.Store({
       return state.portfolio.funds;
     },
     stockPortfolio(state) {
-      return state.portfolio.records;
+      return state.portfolio.records.map(r => {
+        const stock = state.stocks.find(s => s.id == r.id);
+        return {
+          id: r.id,
+          name: stock.name,
+          price: stock.price,
+          quantity: r.quantity
+        }
+      })
     }
   },
   mutations: {
@@ -37,10 +45,7 @@ export default new Vuex.Store({
       const { stockId, stockPrice, quantity } = order;
       let record = state.portfolio.records.find(r => r.id == stockId);
       if (!record) {
-        record = {
-          ...state.stocks.find(s => s.id == stockId),
-          quantity: 0
-        }
+        record = { id: stockId, quantity: 0 };
         state.portfolio.records.push(record);
       }
       record.quantity += quantity;
@@ -58,11 +63,16 @@ export default new Vuex.Store({
         state.portfolio.records.splice(i, 1);
         state.portfolio.funds += stockPrice * record.quantity;
       }
+    },
+    loadUserDataFromDB(state, userData) {
+      state.stocks = userData.stocks;
+      state.portfolio.funds = userData.funds;
+      state.portfolio.records = userData.stockPortfolio.map(ele => ({ id: ele.id, quantity: ele.quantity }));
     }
   },
   actions: {
     initStocks({ commit }) {
-      commit('setStocks', stocks);
+      commit('setStocks', initStocks);
     },
     randomizeStocks({ commit }) {
       commit('randStocks');
@@ -73,6 +83,9 @@ export default new Vuex.Store({
     sellStock({ commit }, order) {
       commit('sellStock', order);
     },
+    loadUserDataFromDB({ commit }, userData) {
+      commit('loadUserDataFromDB', userData);
+    }
   },
   modules: {
   }

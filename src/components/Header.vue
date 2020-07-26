@@ -21,7 +21,10 @@
           <li>
             <a href="#" @click.prevent="endDay">End Day</a>
           </li>
-          <li class="dropdown">
+          <li
+            :class="['dropdown', {'open': dropdownOpen}]"
+            @click.prevent="dropdownOpen=!dropdownOpen"
+          >
             <a
               href="#"
               class="dropdown-toggle"
@@ -35,10 +38,10 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#">Save Data</a>
+                <a href="#" @click.prevent="saveData">Save Data</a>
               </li>
               <li>
-                <a href="#">Load Data</a>
+                <a href="#" @click.prevent="loadData">Load Data</a>
               </li>
             </ul>
           </li>
@@ -49,17 +52,40 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  computed: {
-    funds() {
-      return this.$store.getters.funds;
-    }
+  data() {
+    return {
+      dropdownOpen: false
+    };
   },
+  computed: mapGetters(["stocks", "funds", "stockPortfolio"]),
   methods: {
-    ...mapActions(["randomizeStocks"]),
+    ...mapActions(["randomizeStocks", "loadUserDataFromDB"]),
     endDay() {
       this.randomizeStocks();
+    },
+    saveData() {
+      const userData = {
+        stocks: this.stocks,
+        funds: this.funds,
+        stockPortfolio: this.stockPortfolio
+      };
+      fetch("http://localhost:3000/userData", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+      }).catch(err => console.log(err));
+    },
+    loadData() {
+      fetch("http://localhost:3000/userData")
+        .then(res => res.json())
+        .then(json => {
+          if (json) {
+            this.loadUserDataFromDB(json);
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };
